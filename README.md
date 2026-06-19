@@ -8,6 +8,18 @@
 |---|---|
 | [`write-production-prd`](skills/write-production-prd/SKILL.md) | 通过证据收集、产品经理需求分析、Vibe Coding 意图工程、分阶段成形、受控模块确认、评审交接、安全装配与确定性质量门禁，产出可交付的生产级 PRD。**默认以中文输出 PRD。** |
 
+## 安装（npx skills）
+
+本仓库遵循 Agent Skills 规范，可用 [`npx skills`](https://github.com/vercel-labs/skills) 一键安装到 Claude Code、Codex、Cursor 等：
+
+```bash
+# 安装本技能
+npx skills add guanhua1992/pmskills/write-production-prd
+
+# 或只写仓库名，由 CLI 列出并选择
+npx skills add guanhua1992/pmskills
+```
+
 ## 跨平台运行
 
 技能脚本只依赖 **Python 3 标准库**，无第三方依赖。脚本通过 `Path(__file__)` 自行定位技能目录，因此与当前工作目录无关——只要用技能目录的路径来调用脚本即可。
@@ -28,4 +40,4 @@ PRD 默认以**中文**输出叙述与字段标签；稳定标记 `[PRD-*]`、ID
 python3 -m unittest discover -s tests -v
 ```
 
-CI 见 [.github/workflows/verify.yml](.github/workflows/verify.yml)：校验技能结构并运行单元/验收测试。
+> 可选 CI：仓库源码内含 `verify.yml`（校验技能结构 + 跑测试），因首次提交所用 token 缺 `workflow` 权限未一并推送；可在 GitHub 网页 Actions 新建 workflow 启用。
