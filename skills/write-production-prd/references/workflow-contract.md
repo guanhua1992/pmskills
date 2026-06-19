@@ -44,6 +44,10 @@ flowchart LR
 
 不要仅因为某个假设看起来合理就把它转成事实。
 
+### 资料投喂（Materials Intake）
+
+若用户把参考资料（旧 PRD、竞品、调研、会议纪要、导出数据等）放进了 `inputs/materials/`，在塑形开始前**逐份读取**（跳过占位的 `README.md`），并用 `add_source.py` 登记为 `SRC-*`：`location` 记 `inputs/materials/<文件名>`，按 Fact/Assumption 分类、标注置信度，并在 `00-discovery`/`00-intake` 引用。资料原件保留在该目录即可，不必复制到别处。
+
 ## 确认协议
 
 - 每轮最多问 3-5 个问题。

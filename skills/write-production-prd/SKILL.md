@@ -61,6 +61,8 @@ python3 "$SKILL_DIR/scripts/init_workspace.py" --name "<产品或功能名>" --d
 
 ### 1. 塑形需求
 
+**先投喂资料**：开工前检查 `inputs/materials/`。逐份读取其中每个文件（`README.md` 除外），用 `add_source.py` 把每份登记为 `SRC-*` 证据（`--location` 填 `inputs/materials/<文件名>`，按事实/假设分类并标注置信度），随后在 `00-discovery`/`00-intake` 中引用它们。这是已有铁律"先登记为证据再当事实"的标准入口。
+
 按顺序完成并确认以下文件：
 
 1. `shaping/00-discovery.md`
@@ -74,12 +76,31 @@ python3 "$SKILL_DIR/scripts/init_workspace.py" --name "<产品或功能名>" --d
 
 存在未解决的关键问题时不得继续推进。未解决的非关键问题要保持可见，并标注负责人与解决条件。
 
+每个阶段经你审阅确认后，执行（逐个阶段）：
+
+```bash
+python3 "$SKILL_DIR/scripts/confirm_item.py" <workspace> --kind stage --name 00-discovery
+```
+
 ### 2. 规划 PRD
 
 依据 `references/depth-and-profiles.md` 选定 `brief`、`standard` 或 `enterprise`。提出 `prd/module-plan.md`，解释所选深度/画像，并等待确认。
-确认后，把选定的深度与画像记录到 `workspace.json`。
+确认计划时同步把选定的深度与画像写入 `workspace.json`：
+
+```bash
+python3 "$SKILL_DIR/scripts/confirm_item.py" <workspace> --kind plan --depth standard --product-profile b2b
+```
 
 ### 3. 编写已确认的模块
+
+固定 6 个模块，文件名 = `assets/module-templates/` 中的同名模板，**每个模块从同名模板起草**；这 6 个恰好覆盖全部 19 个 `[PRD-*]` 标记：
+
+1. `01-context-value-and-scope` — CONTROL, BACKGROUND, GOALS, SCOPE
+2. `02-users-scenarios-and-flows` — USERS, FLOWS
+3. `03-functional-requirements` — REQUIREMENTS, EXCEPTIONS
+4. `04-business-rules-data-permissions` — RULES, DATA, PERMISSIONS, INTEGRATIONS
+5. `05-nfr-metrics-release-acceptance` — NFR, METRICS, RELEASE, ACCEPTANCE, RISKS
+6. `06-review-and-vibe-coding-spec` — VIBE-SPEC, TRACEABILITY
 
 在 `prd/modules/` 下一次只写一个文件。每个模块必须：
 
@@ -88,7 +109,13 @@ python3 "$SKILL_DIR/scripts/init_workspace.py" --name "<产品或功能名>" --d
 - 在相关处覆盖正常、备选、异常、空、权限与边界行为；
 - 标明业务规则、状态流转、数据影响与依赖；
 - 当该模块将指导 AI 辅助实现时，包含 Vibe Coding 约束；
-- 进入下一个模块前先被确认。
+- 进入下一个模块前先被确认：
+
+```bash
+python3 "$SKILL_DIR/scripts/confirm_item.py" <workspace> --kind module --name 01-context-value-and-scope
+```
+
+评审文件同理用 `--kind review --name self-check` 确认。
 
 ### 4. 安全装配
 

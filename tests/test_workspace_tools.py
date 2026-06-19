@@ -98,6 +98,58 @@ class WorkspaceToolTests(unittest.TestCase):
             result = confirm(str(workspace), "stage", "00-intake")
             self.assertTrue(result["ok"])
 
+    def test_confirm_item_blocks_conflict_and_placeholder_markers(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = create_workspace(Path(temp), "Blocker Test")
+            stage = workspace / "shaping" / "00-intake.md"
+            base = stage.read_text(encoding="utf-8").replace("[TO CONFIRM]", "ok")
+            stage.write_text(base + "\n- [冲突] 两处来源矛盾\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "unresolved markers"):
+                confirm(str(workspace), "stage", "00-intake")
+            stage.write_text(base + "\n- {{TODO}}\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "unresolved markers"):
+                confirm(str(workspace), "stage", "00-intake")
+
+    def test_confirm_item_requires_status_marker(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = create_workspace(Path(temp), "Marker Required")
+            stage = workspace / "shaping" / "00-intake.md"
+            text = stage.read_text(encoding="utf-8").replace("[TO CONFIRM]", "ok")
+            text = "\n".join(line for line in text.splitlines() if "stage-status" not in line)
+            stage.write_text(text, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "status"):
+                confirm(str(workspace), "stage", "00-intake")
+
+    def test_confirm_plan_writes_depth_and_profile_and_blocks_auto(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = create_workspace(Path(temp), "Plan Test", "auto", "auto")
+            plan = workspace / "prd" / "module-plan.md"
+            plan.write_text(
+                plan.read_text(encoding="utf-8").replace("[TO CONFIRM]", "复杂度适中"),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "auto"):
+                confirm(str(workspace), "plan", None)
+            result = confirm(str(workspace), "plan", None, "standard", "b2b")
+            self.assertTrue(result["ok"])
+            metadata = load_json(workspace / "workspace.json")
+            self.assertEqual(metadata["depth"], "standard")
+            self.assertEqual(metadata["product_profile"], "b2b")
+            self.assertIn("plan-status: confirmed", plan.read_text(encoding="utf-8"))
+
+    def test_confirm_review_without_blocking_decision_row(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            workspace = create_workspace(Path(temp), "Review Test")
+            review = workspace / "review" / "action-items.md"
+            review.write_text(
+                review.read_text(encoding="utf-8").replace("[TO CONFIRM]", "无"),
+                encoding="utf-8",
+            )
+            result = confirm(str(workspace), "review", "action-items")
+            self.assertTrue(result["ok"])
+            metadata = load_json(workspace / "workspace.json")
+            self.assertEqual(metadata["review_status"]["action-items"], "confirmed")
+
     def test_status_workspace_reports_next_stage_and_validation(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             workspace = create_workspace(Path(temp), "Status Test")

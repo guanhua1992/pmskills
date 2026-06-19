@@ -76,13 +76,16 @@
 
 ## 模块计划
 
-推荐的模块顺序：
+固定的 6 个模块（文件名 = `assets/module-templates/` 中的同名模板，每个模块从该模板起草）。这 6 个模块恰好覆盖全部 19 个 `[PRD-*]` 标记，每个一次：
 
-1. `01-context-and-scope.md`
-2. `02-experience-and-functional-requirements.md`
-3. `03-data-permissions-and-integrations.md`
-4. `04-quality-release-and-acceptance.md`
-5. `05-decisions-and-traceability.md`
+| # | 模块 | 产出的 `[PRD-*]` |
+|---|---|---|
+| 1 | `01-context-value-and-scope` | CONTROL, BACKGROUND, GOALS, SCOPE |
+| 2 | `02-users-scenarios-and-flows` | USERS, FLOWS |
+| 3 | `03-functional-requirements` | REQUIREMENTS, EXCEPTIONS |
+| 4 | `04-business-rules-data-permissions` | RULES, DATA, PERMISSIONS, INTEGRATIONS |
+| 5 | `05-nfr-metrics-release-acceptance` | NFR, METRICS, RELEASE, ACCEPTANCE, RISKS |
+| 6 | `06-review-and-vibe-coding-spec` | VIBE-SPEC, TRACEABILITY |
 
 每个模块以这两行开头：
 

@@ -17,6 +17,13 @@ WORKSPACE_FILE = "workspace.json"
 VALID_DEPTHS = {"auto", "brief", "standard", "enterprise"}
 VALID_PROFILES = {"auto", "general", "b2b", "b2c", "ai-data"}
 VALID_STATUSES = {"draft", "review-ready", "approved"}
+
+# Unresolved-marker / placeholder pattern shared by the validator and the
+# confirmation tool, so both block the same set before anything is confirmed.
+BLOCKER_PATTERN = re.compile(
+    r"\{\{[^}]+\}\}|\[TO CONFIRM\]|\[待确认\]|\[CONFLICT\]|\[冲突\]",
+    re.IGNORECASE,
+)
 SHAPING_STAGES = [
     "00-discovery",
     "00-intake",

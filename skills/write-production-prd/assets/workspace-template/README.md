@@ -10,6 +10,7 @@
 
 - 只想看成品 → 打开 `prd/PRD.md`
 - 想看怎么一步步推导出来的 → `shaping/`（按 00 → 06 顺序读）
+- 想投喂参考资料 → 把文件放进 `inputs/materials/`（技能会在塑形前读取并登记为证据）
 - 想看证据从哪来 → `inputs/source-notes.md`
 - 想看质量门禁评分 → `prd/quality-report.md`
 
@@ -23,6 +24,7 @@
 | `prd/quality-report.md` | 质量门禁报告 | ⚙️ 校验时自动生成 |
 | `prd/_append-log.md` | 受控装配日志 | ⚙️ 装配时自动追加 |
 | `shaping/` | 需求塑形过程：发现→价值→JTBD→规则→意图→范围→简报 | ✅ |
+| `inputs/materials/` | 你投喂参考资料的地方（旧PRD/竞品/调研/纪要） | ✅ 放文件进去即可 |
 | `inputs/source-notes.md` | 证据与来源账本 | ✅ |
 | `review/` | 评审记录（自检/版本/内部/技术/公开/行动项） | ✅ |
 | `workspace.json` | 工作区元数据与状态总账 | ⚙️ 脚本维护，勿手改 |

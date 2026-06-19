@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from common import (
+    BLOCKER_PATTERN,
     REVIEW_FILES,
     SHAPING_STAGES,
     VALID_STATUSES,
@@ -48,10 +49,6 @@ VAGUE_PATTERN = re.compile(
     r"\b(fast|easy|intuitive|appropriate|generally|timely|user-friendly|"
     r"quickly|efficient|seamless|as soon as possible)\b|"
     r"(尽快|友好|合理|适当|快速|高效|及时|简单易用)",
-    re.IGNORECASE,
-)
-BLOCKER_PATTERN = re.compile(
-    r"\{\{[^}]+\}\}|\[TO CONFIRM\]|\[待确认\]|\[CONFLICT\]|\[冲突\]",
     re.IGNORECASE,
 )
 ID_PATTERNS = {
