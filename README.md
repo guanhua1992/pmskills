@@ -34,6 +34,23 @@ npx skills add guanhua1992/pmskills
 
 PRD 默认以**中文**输出叙述与字段标签；稳定标记 `[PRD-*]`、ID（`SRC/GOAL/SCN/FR/NFR/AC/BR`）、frontmatter 键与状态值保持英文/ASCII，以保证确定性校验。初始化时可用 `--output-language` 覆盖（如 `en`、`follow-user`）。
 
+## 投喂参考资料（编写前）
+
+想让 PRD 基于已有材料（旧 PRD、竞品资料、调研、会议纪要、导出数据等），在编写前把它们投喂给技能：
+
+1. **先建工作区**：手动跑一次 `init_workspace.py`（或让 Agent 先初始化），生成 `<名称>-workspace/`。
+2. **放资料**：把文件拷进 `<工作区>/inputs/materials/`。
+3. **开工**：技能会在塑形开始前**逐份读取** `materials/`，用 `add_source.py` 登记为 `SRC-*` 证据（按事实/假设分类、标注置信度），后续 PRD 引用即可追溯到原始资料。
+
+```bash
+# 1) 先建工作区
+python3 "$SKILL_DIR/scripts/init_workspace.py" --name "你的产品名"
+# 2) 把参考资料放进 <你的产品名-workspace>/inputs/materials/
+# 3) 再让技能开始写 —— 它会先读 materials/ 并登记为证据
+```
+
+> 资料原件保留在 `inputs/materials/` 即可，技能不会复制到别处；目录内的 `README.md` 为占位说明，不会被当作资料读取。
+
 ## 运行测试
 
 ```bash
